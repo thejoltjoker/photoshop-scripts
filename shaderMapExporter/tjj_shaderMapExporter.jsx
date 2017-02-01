@@ -82,10 +82,8 @@ function exportFunction(showVersion, format){
         // add version to filename if checked
         if (showVersion) {
             var outputChannelName = outputGroupName+"_"+documentVersion;
-            alert(showVersion);
         } else {
             var outputChannelName = outputGroupName;
-            alert(showVersion);
         }
 
         // output filename
@@ -96,15 +94,15 @@ function exportFunction(showVersion, format){
 
         switch(dropdown_format.selection.index){
             case 0:
-                exportAsPNG(new File(decodeURI(app.activeDocument.path)+"/../exports/"+outputFilename+".png"));
+                exportAsTIF(new File(decodeURI(app.activeDocument.path)+"/../exports/"+outputFilename+".tif"));
                 break;
 
             case 1:
-                exportAsJPG(new File(decodeURI(app.activeDocument.path)+"/../exports/"+outputFilename+".jpg"));
+                exportAsPNG(new File(decodeURI(app.activeDocument.path)+"/../exports/"+outputFilename+".png"));
                 break;
 
             case 2:
-                exportAsTIF(new File(decodeURI(app.activeDocument.path)+"/../exports/"+outputFilename+".tif"));
+                exportAsJPG(new File(decodeURI(app.activeDocument.path)+"/../exports/"+outputFilename+".jpg"));
                 break;
         }
 
