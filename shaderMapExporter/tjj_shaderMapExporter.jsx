@@ -1,8 +1,20 @@
-﻿// todo
+﻿/*
+tjj_shaderMapExporter.jsx
+
+version: 		1
+description: 	save texture documents to different outputs.
+author: 		thejoltjoker
+url: 			http://thejoltjoker.com
+
+saves the current document in the same folder and increments the version number.
+the original document should be saved with a version.
+example: document_v001.psd
+*/
+
+// todo
 // window with selections
 // checkboxes for naming
 // custom suffix
-// format
 
 // variables
 var doc = app.activeDocument;
@@ -10,103 +22,122 @@ var topLevelGroups = [];
 var outputGroups = [];
 var allGroups = doc.layerSets;
 var documentSaveName = doc.name.substr(0, doc.name.indexOf('_'));
+var documentVersion = doc.name.substring(start_pos = doc.name.lastIndexOf('_') + 1,doc.name.indexOf('.',start_pos));
 
 // create window
 var w = new Window ("dialog", "Shader Map Exporter");
 w.alignChildren = "left";
 w.orientation = "row";
-var dropdown_format = w.add ("dropdownlist", undefined, ["png", "jpg", "tif"]);
+var dropdown_format = w.add ("dropdownlist", undefined, ["tif", "png", "jpg"]);
 dropdown_format.selection = 0;
 var checkbox_version = w.add("checkbox", undefined, "\u00A0Include Version");
-var btn_save = w.add("button", undefined, "Save").onClick=function(){exportFunction(checkbox_version.value, dropdown_format.selection.index)};
-var btn_cancel = w.add("button", undefined, "Cancel").onClick=function(){cancelButton()};
+var btn_save = w.add("button", undefined, "Save").onClick = function(){exportFunction(checkbox_version.value, dropdown_format.selection.index);};
+var btn_cancel = w.add("button", undefined, "Cancel").onClick = function(){cancelButton();};
 w.show();
 
+// function for the cancel button
 function cancelButton(){
-	alert("canceled")
-	w.close()
+    // alert("canceled");
+    w.close();
 }
 
 // function saveButton(){
-// 	alert("Saved")
+//  alert("Saved")
 //     w.close()
 // }
 
+// function for the save button
 function exportFunction(showVersion, format){
-	
-	for (var i = allGroups.length - 1; i >= 0; i--) {
-		// get name of group
-		var currentGroup = allGroups[i].name;
 
-		if (currentGroup.indexOf("_out") !== -1) {
-			alert(currentGroup);
+	// loop through all groups
+    for (i = allGroups.length - 1; i >= 0; i--) {
+        // get name of group
+        var currentGroup = allGroups[i].name;
 
-			// turn off visibility
-			currentGroup.visible = false;
-			// add to new list
-			outputGroups.push(allGroups[i])
+        // if group ends with _out
+        if (currentGroup.indexOf("_out") !== -1) {
 
-		} else {
-			alert("no out");
-		}
-	};
+            // turn off visibility
+            allGroups[i].visible = false;
+            // add to new list
+            outputGroups.push(allGroups[i]);
 
-	for (var i = outputGroups.length - 1; i >= 0; i--) {
-		// turn on layer
-		outputGroups[i].visible = true;
-		var currentGroupName = outputGroups[i].name;
+        // if group is base
+        } else if (currentGroup.indexOf("base") !== -1) {
+            currentGroup.visible = true;
+        }
+    }
 
-		var outputGroupName = currentGroupName.substr(0, currentGroupName.indexOf('_'));
-		alert(documentSaveName+"_"+outputGroupName)
 
-		// save
-		//exportOutputs( app.activeDocument, new File(decodeURI(app.activeDocument.path)+"/../exports/"+outputGroups[i].name+".jpg"), dropdown_format.index);
+    // loop through all group in list
+    for (i = outputGroups.length - 1; i >= 0; i--) {
 
-		// add version to filename if checked
-		if (showVersion == true) {
-			var outputFilename = outputGroups[i].name+"_version";	
-		} else {
-			var outputFilename = outputGroups[i].name;	
-		}
-		
+        // turn on group visibility
+        outputGroups[i].visible = true;
 
-		if (dropdown_format == 0) {
-			exportAsPNG(app.activeDocument, new File(decodeURI(app.activeDocument.path)+"/../exports/"+outputFilename+".png"));
-		} else if (dropdown_format == 1) {
-			exportAsJPG(app.activeDocument, new File(decodeURI(app.activeDocument.path)+"/../exports/"+outputGroups[i].name+".jpg"));
-		} else if (dropdown_format == 2) {
-			exportAsTIF(app.activeDocument, new File(decodeURI(app.activeDocument.path)+"/../exports/"+outputGroups[i].name+".tif"));
-		} else {
-			alert("No format selected");
-		}
+        // variables
+        var currentGroupName = outputGroups[i].name;
+        var outputGroupName = currentGroupName.substr(0, currentGroupName.indexOf('_'));
 
-		// turn off layer visibility
-		//outputGroups[i].visible = false;
-	};
+        // add version to filename if checked
+        if (showVersion) {
+            var outputChannelName = outputGroupName+"_"+documentVersion;
+            alert(showVersion);
+        } else {
+            var outputChannelName = outputGroupName;
+            alert(showVersion);
+        }
 
-	alert("All channels saved")
-	w.close()
+        // output filename
+        var outputFilename = documentSaveName+"_"+outputChannelName;
 
-};
+        // save
+        //exportOutputs( app.activeDocument, new File(decodeURI(app.activeDocument.path)+"/../exports/"+outputGroups[i].name+".jpg"), dropdown_format.index);
 
-function exportAsJPG( doc, saveFile, format ) {  
-	alert("Exported as JPEG")
-	// var saveOptions = new JPEGSaveOptions( );  
-	// saveOptions.embedColorProfile = true;  
-	// saveOptions.formatOptions = FormatOptions.STANDARDBASELINE;  
-	// saveOptions.matte = MatteType.NONE;  
-	// saveOptions.quality = 12;   
-	// doc.saveAs( saveFile, saveOptions, true );  
+        switch(dropdown_format.selection.index){
+            case 0:
+                exportAsPNG(new File(decodeURI(app.activeDocument.path)+"/../exports/"+outputFilename+".png"));
+                break;
+
+            case 1:
+                exportAsJPG(new File(decodeURI(app.activeDocument.path)+"/../exports/"+outputFilename+".jpg"));
+                break;
+
+            case 2:
+                exportAsTIF(new File(decodeURI(app.activeDocument.path)+"/../exports/"+outputFilename+".tif"));
+                break;
+        }
+
+        // turn off group visibility
+        outputGroups[i].visible = false;
+    }
+
+    w.close();
+
 }
 
-function exportAsPNG(doc, saveFile){
-	alert("Exported as PNG")
-	// var saveOptions = new PNGSaveOptions();
-	// doc.saveAs(saveFile, true)
+function exportAsPNG(saveFile){
+    var saveOptions = new PNGSaveOptions();
+    app.activeDocument.saveAs(saveFile, saveOptions, true);
 }
 
-function exportAsTIF(doc, saveFile){
-	alert("Exported as TIF")
-	// doc.saveAs(saveFile, true)
+function exportAsJPG(saveFile){
+    var saveOptions = new JPEGSaveOptions();
+    saveOptions.embedColorProfile = true;
+    saveOptions.formatOptions = FormatOptions.STANDARDBASELINE;
+    saveOptions.matte = MatteType.NONE;
+    saveOptions.quality = 12;
+    app.activeDocument.saveAs(saveFile, saveOptions, true);
+    alert("Exported as JPEG");
 }
 
+function exportAsTIF(saveFile){
+    var saveOptions = new TiffSaveOptions();
+    saveOptions.saveImagePyramid = true;
+    saveOptions.layers = false;
+    saveOptions.imageCompression = TIFFEncoding.TIFFLZW;
+    saveOptions.jpegQuality = 12;
+    saveOptions.embedColorProfile = true;
+    app.activeDocument.saveAs(saveFile, saveOptions, true);
+    alert("Exported as TIF");
+}
