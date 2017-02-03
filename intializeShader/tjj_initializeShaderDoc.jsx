@@ -1,14 +1,13 @@
 ﻿/*
-initialize
+tjj_initializeShaderDoc.jsx
 
 version: 		1
-description: 	incremental save function for photoshop.
+description: 	create new document for export with my shaderMapExporter script.
 author: 		thejoltjoker
 url: 			http://thejoltjoker.com
 
-saves the current document in the same folder and increments the version number.
-the original document should be saved with a version.
-example: document_v001.psd
+Initiates a new document with some set folders and defaults for creating textures.
+Works well with my shader export script.
 */
 
 
@@ -90,7 +89,7 @@ function createNewDoc(asset, resolution, bdepth, channelDiffuse, channelReflecti
     // var newDoc = app.documents.add();
 
     // set name
-    //newDoc.name = asset;
+    newDocName = asset + "_v001"
 
     
 
@@ -126,31 +125,10 @@ function createNewDoc(asset, resolution, bdepth, channelDiffuse, channelReflecti
             newBitsPerChannel = "BitsPerChannelType.EIGHT";
             break;
     }
-    
-
-    // app.preferences.rulerUnits = Units.PIXELS;
 
     app.documents.add(res, res, 72, asset, NewDocumentMode.RGB, DocumentFill.WHITE, 1, newBitsPerChannel);
     
     var doc = app.activeDocument;
-
-    // set bit depth
-    // switch (bdepth){
-    //     case 0:
-    //         doc.bitsPerChannel = BitsPerChannelType.THIRTYTWO;
-    //         // newBitsPerChannel = BitsPerChannelType.THIRTYTWO;
-    //         break;
-
-    //     case 1:
-    //         doc.bitsPerChannel = BitsPerChannelType.SIXTEEN;
-    //         // app.documents.bitsPerChannel = BitsPerChannelType.SIXTEEN;
-    //         break;
-
-    //     case 2:
-    //         doc.bitsPerChannel = BitsPerChannelType.EIGHT;
-    //         // newBitsPerChannel = "BitsPerChannelType.EIGHT";
-    //         break;
-    // }
 
     var baseGroup = doc.layerSets.add();
     baseGroup.name = "base";
