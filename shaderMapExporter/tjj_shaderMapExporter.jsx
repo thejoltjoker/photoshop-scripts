@@ -6,9 +6,7 @@ description: 	save texture documents to different outputs.
 author: 		thejoltjoker
 url: 			http://thejoltjoker.com
 
-saves the current document in the same folder and increments the version number.
-the original document should be saved with a version.
-example: document_v001.psd
+exports all groups with the suffix _out to a separate file.
 */
 
 // todo
@@ -37,14 +35,8 @@ w.show();
 
 // function for the cancel button
 function cancelButton(){
-    // alert("canceled");
     w.close();
 }
-
-// function saveButton(){
-//  alert("Saved")
-//     w.close()
-// }
 
 // function for the save button
 function exportFunction(showVersion, format){
