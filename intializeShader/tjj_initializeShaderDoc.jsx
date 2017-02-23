@@ -114,7 +114,7 @@ function createNewDoc(asset, resolution, bdepth, channelDiffuse, channelReflecti
     // set bit depth
     switch (bdepth){
         case 0:
-            newBitsPerChannel = "BitsPerChannelType.THIRTYTWO";
+            newBitsPerChannel = BitsPerChannelType.THIRTYTWO;
             break;
 
         case 1:
@@ -122,7 +122,7 @@ function createNewDoc(asset, resolution, bdepth, channelDiffuse, channelReflecti
             break;
 
         case 2:
-            newBitsPerChannel = "BitsPerChannelType.EIGHT";
+            newBitsPerChannel = BitsPerChannelType.EIGHT;
             break;
     }
 

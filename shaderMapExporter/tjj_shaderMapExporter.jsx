@@ -126,7 +126,6 @@ function exportAsJPG(saveFile){
     saveOptions.matte = MatteType.NONE;
     saveOptions.quality = 12;
     app.activeDocument.saveAs(saveFile, saveOptions, true);
-    alert("Exported as JPEG");
 }
 
 function exportAsTIF(saveFile){
@@ -137,5 +136,4 @@ function exportAsTIF(saveFile){
     saveOptions.jpegQuality = 12;
     saveOptions.embedColorProfile = true;
     app.activeDocument.saveAs(saveFile, saveOptions, true);
-    alert("Exported as TIF");
 }
