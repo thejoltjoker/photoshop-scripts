@@ -28,7 +28,7 @@ var g02 = w.add ("group {orientation: 'row', alignChildren: 'fill'}");
 var g03 = w.add ("group {orientation: 'row', alignChildren: 'fill'}");
     var win_bitDepth = g03.add ("dropdownlist", undefined, ["32-bit", "16-bit", "8-bit"]);
         win_bitDepth.selection = 1;
-        win_bitDepth.title = "Bit depth:"        
+        win_bitDepth.title = "Bit depth:"
 
 var p01 = w.add ("panel", undefined,"Channels");
     p01.alignChildren = ["left","top"];
@@ -58,7 +58,7 @@ var g04 = w.add ("group {orientation: 'row', alignment: 'center'}");
     var btn_save = g04.add("button", undefined, "Initialize");
     btn_save.onClick = function(){
                             createNewDoc(
-                                win_filename.text, 
+                                win_filename.text,
                                 win_docSize.selection.index,
                                 win_bitDepth.selection.index,
                                 win_diffuse.value,
@@ -91,7 +91,7 @@ function createNewDoc(asset, resolution, bdepth, channelDiffuse, channelReflecti
     // set name
     newDocName = asset + "_v001"
 
-    
+
 
     switch (resolution){
         case 0:
@@ -110,7 +110,7 @@ function createNewDoc(asset, resolution, bdepth, channelDiffuse, channelReflecti
             var res = new UnitValue("1024 pixels");
             break;
     }
-    
+
     // set bit depth
     switch (bdepth){
         case 0:
@@ -127,7 +127,7 @@ function createNewDoc(asset, resolution, bdepth, channelDiffuse, channelReflecti
     }
 
     app.documents.add(res, res, 72, asset, NewDocumentMode.RGB, DocumentFill.WHITE, 1, newBitsPerChannel);
-    
+
     var doc = app.activeDocument;
 
     var baseGroup = doc.layerSets.add();
@@ -135,34 +135,34 @@ function createNewDoc(asset, resolution, bdepth, channelDiffuse, channelReflecti
 
     // create all channel groups
     if (channelDiffuse) {
-        var diffuseGroup = doc.layerSets.add(); 
+        var diffuseGroup = doc.layerSets.add();
         diffuseGroup.name = "diffuse_out";
-    } 
+    }
 
     if (channelReflection) {
-        var reflectionGroup = doc.layerSets.add(); 
+        var reflectionGroup = doc.layerSets.add();
         reflectionGroup.name = "reflection_out";
-    } 
+    }
 
     if (channelSpecular) {
-        var specularGroup = doc.layerSets.add(); 
+        var specularGroup = doc.layerSets.add();
         specularGroup.name = "specular_out";
     }
 
     if (channelBump) {
-        var bumpGroup = doc.layerSets.add(); 
+        var bumpGroup = doc.layerSets.add();
         bumpGroup.name = "bump_out";
     }
 
     if (channelRefraction) {
-        var refractionGroup = doc.layerSets.add(); 
+        var refractionGroup = doc.layerSets.add();
         refractionGroup.name = "refraction_out";
     }
 
     if (channelOpacity) {
-        var opacityGroup = doc.layerSets.add(); 
+        var opacityGroup = doc.layerSets.add();
         opacityGroup.name = "opacity_out";
     }
-    
+
     w.close();
 }
